@@ -35,40 +35,26 @@ agent-loop-streaming/
 
 最适合非专业程序员的方式不是自己手动移动文件，而是：
 
-1. 先把这个仓库 clone 到电脑里。
+1. 先把这个仓库下载到电脑里。
 2. 打开你正在使用的 Codex、Claude Code 或 Cursor。
 3. 把下面对应工具的安装 prompt 发给它。
 4. 让它帮你检查目录、移动文件、确认是否安装成功。
 
-先 clone 仓库：
+如果你电脑已经安装 git，可以 clone 仓库：
 
 ```bash
 git clone https://github.com/hensonzh/agent-loop-streaming.git
 ```
 
-如果你不知道 clone 到了哪里，可以直接把这句话发给你的 AI 助手：
+如果你电脑没有安装 git，可以直接打开 GitHub 仓库页面，点击右上方绿色的 `Code` 按钮，然后点击 `Download ZIP` 下载。下载后把 ZIP 解压，得到 `agent-loop-streaming` 文件夹。
+
+如果你不知道 clone 或解压到了哪里，可以直接把这句话发给你的 AI 助手：
 
 ```text
-我刚刚 clone 了 https://github.com/hensonzh/agent-loop-streaming.git，但我不知道它在哪个目录。请帮我在常见下载目录和当前项目附近查找 `agent-loop-streaming` 文件夹，然后按你的工具要求帮我安装。
+我刚刚下载了 https://github.com/hensonzh/agent-loop-streaming.git，但我不知道它在哪个目录。请帮我在常见下载目录和当前项目附近查找 `agent-loop-streaming` 文件夹，然后按你的工具要求帮我安装。
 ```
 
 ## 添加到 Codex
-
-Codex 的本地 skill 通常放在：
-
-```text
-~/.codex/skills/
-```
-
-最终目录应长这样：
-
-```text
-~/.codex/skills/agent-loop-streaming/SKILL.md
-~/.codex/skills/agent-loop-streaming/references/frontend-work-panel.md
-~/.codex/skills/agent-loop-streaming/references/event-contract.md
-~/.codex/skills/agent-loop-streaming/references/debugging-and-tests.md
-~/.codex/skills/agent-loop-streaming/evals/evals.json
-```
 
 ### 推荐方式：让 Codex 帮你安装
 
@@ -77,76 +63,41 @@ Codex 的本地 skill 通常放在：
 ```text
 请帮我安装 agent-loop-streaming skill。
 
-我已经 clone 了这个仓库：
+我已经下载或 clone 了这个仓库：
 https://github.com/hensonzh/agent-loop-streaming.git
 
 请你做这些事：
-1. 在当前项目、`~/Downloads`、`~/Desktop`、`~/project`、`~/projects` 等常见位置查找 `agent-loop-streaming` 文件夹。
-2. 确认里面有 `SKILL.md`、`references/` 和 `evals/`。
-3. 创建 `~/.codex/skills/` 目录。
-4. 把整个 `agent-loop-streaming` 文件夹复制到 `~/.codex/skills/agent-loop-streaming`。
-5. 如果目标目录已经存在，先告诉我，再询问是否覆盖。
-6. 安装后列出最终目录结构，确认 `~/.codex/skills/agent-loop-streaming/SKILL.md` 存在。
+1. 先判断我的系统是 macOS、Windows 还是 Linux。
+2. 在当前项目、下载目录、桌面、用户目录等常见位置查找 `agent-loop-streaming` 文件夹。
+3. 如果找到的是 `agent-loop-streaming-main`，请把它当作下载后的 skill 文件夹处理。
+4. 确认里面有 `SKILL.md`、`references/` 和 `evals/`。
+5. 按当前系统创建 Codex skills 目录：macOS/Linux 用 `~/.codex/skills/`，Windows 用 `%USERPROFILE%\.codex\skills\`。
+6. 把整个 skill 文件夹复制进去，并命名为 `agent-loop-streaming`。
+7. 如果目标目录已经存在，先告诉我，再询问是否覆盖。
+8. 安装后确认 `agent-loop-streaming/SKILL.md` 存在。
 ```
 
 安装完成后，重启 Codex，或开一个新的 Codex 会话。
 
 ### 手动方式
 
-如果你熟悉命令行，也可以直接执行：
-
-```bash
-mkdir -p ~/.codex/skills
-git clone https://github.com/hensonzh/agent-loop-streaming.git ~/.codex/skills/agent-loop-streaming
-```
-
-如果你已经把仓库下载到了 `~/Downloads/agent-loop-streaming`：
+macOS / Linux：
 
 ```bash
 mkdir -p ~/.codex/skills
 cp -R ~/Downloads/agent-loop-streaming ~/.codex/skills/agent-loop-streaming
 ```
 
-### 在 Codex 里如何触发
+Windows PowerShell：
 
-你可以直接在对话里提到这个 skill 的主题，例如：
-
-```text
-请用 agent-loop-streaming skill，帮我设计一个 AI CRM assistant 的流式工作过程。
+```powershell
+New-Item -ItemType Directory -Force "$env:USERPROFILE\.codex\skills"
+Copy-Item -Recurse "$env:USERPROFILE\Downloads\agent-loop-streaming" "$env:USERPROFILE\.codex\skills\agent-loop-streaming"
 ```
 
-或描述具体问题：
-
-```text
-我的 agent 会先输出一句话，然后调用工具，最后继续回答。前端现在把第一句话当最终答案了，请帮我设计正确的 loop streaming UI。
-```
-
-如果 Codex 已正确加载，它会在相关任务里读取 `SKILL.md` 和 `references/` 里的补充资料。
-
-### Codex 常见问题
-
-- **看起来没有加载 skill**：确认路径是不是 `~/.codex/skills/agent-loop-streaming/SKILL.md`，不要多套一层目录。
-- **复制后仍然没有生效**：重启 Codex 或新开一个会话。
-- **只复制了 `SKILL.md`**：可以运行，但效果会变弱；建议把 `references/` 和 `evals/` 一起复制。
-- **路径里的 `~` 是什么**：`~` 表示你的用户主目录，例如 macOS 上通常是 `/Users/你的用户名`。
+如果你是通过 `Download ZIP` 下载的，解压后的文件夹可能叫 `agent-loop-streaming-main`。这种情况下，把命令里的 `agent-loop-streaming` 换成 `agent-loop-streaming-main`。
 
 ## 添加到 Claude Code
-
-Claude Code 的个人 skill 通常放在：
-
-```text
-~/.claude/skills/
-```
-
-最终目录应长这样：
-
-```text
-~/.claude/skills/agent-loop-streaming/SKILL.md
-~/.claude/skills/agent-loop-streaming/references/frontend-work-panel.md
-~/.claude/skills/agent-loop-streaming/references/event-contract.md
-~/.claude/skills/agent-loop-streaming/references/debugging-and-tests.md
-~/.claude/skills/agent-loop-streaming/evals/evals.json
-```
 
 ### 推荐方式：让 Claude Code 帮你安装
 
@@ -155,97 +106,55 @@ Claude Code 的个人 skill 通常放在：
 ```text
 请帮我安装 agent-loop-streaming skill。
 
-我已经 clone 了这个仓库：
+我已经下载或 clone 了这个仓库：
 https://github.com/hensonzh/agent-loop-streaming.git
 
 请你做这些事：
-1. 在当前项目、`~/Downloads`、`~/Desktop`、`~/project`、`~/projects` 等常见位置查找 `agent-loop-streaming` 文件夹。
-2. 确认里面有 `SKILL.md`、`references/` 和 `evals/`。
-3. 创建 `~/.claude/skills/` 目录。
-4. 把整个 `agent-loop-streaming` 文件夹复制到 `~/.claude/skills/agent-loop-streaming`。
-5. 如果目标目录已经存在，先告诉我，再询问是否覆盖。
-6. 安装后列出最终目录结构，确认 `~/.claude/skills/agent-loop-streaming/SKILL.md` 存在。
+1. 先判断我的系统是 macOS、Windows 还是 Linux。
+2. 在当前项目、下载目录、桌面、用户目录等常见位置查找 `agent-loop-streaming` 文件夹。
+3. 如果找到的是 `agent-loop-streaming-main`，请把它当作下载后的 skill 文件夹处理。
+4. 确认里面有 `SKILL.md`、`references/` 和 `evals/`。
+5. 按当前系统创建 Claude Code skills 目录：macOS/Linux 用 `~/.claude/skills/`，Windows 用 `%USERPROFILE%\.claude\skills\`。
+6. 把整个 skill 文件夹复制进去，并命名为 `agent-loop-streaming`。
+7. 如果目标目录已经存在，先告诉我，再询问是否覆盖。
+8. 安装后确认 `agent-loop-streaming/SKILL.md` 存在。
 ```
 
 安装完成后，重启 Claude Code，或退出当前会话后重新进入项目。
 
 ### 手动方式
 
-如果你熟悉命令行，也可以直接执行：
-
-```bash
-mkdir -p ~/.claude/skills
-git clone https://github.com/hensonzh/agent-loop-streaming.git ~/.claude/skills/agent-loop-streaming
-```
-
-如果你已经下载到 `~/Downloads/agent-loop-streaming`：
+macOS / Linux：
 
 ```bash
 mkdir -p ~/.claude/skills
 cp -R ~/Downloads/agent-loop-streaming ~/.claude/skills/agent-loop-streaming
 ```
 
-### 项目级安装
+Windows PowerShell：
 
-如果你只想让某一个项目使用这个 skill，可以让 Claude Code 放在项目目录下：
-
-```text
-your-project/
-└── .claude/
-    └── skills/
-        └── agent-loop-streaming/
-            ├── SKILL.md
-            ├── references/
-            └── evals/
+```powershell
+New-Item -ItemType Directory -Force "$env:USERPROFILE\.claude\skills"
+Copy-Item -Recurse "$env:USERPROFILE\Downloads\agent-loop-streaming" "$env:USERPROFILE\.claude\skills\agent-loop-streaming"
 ```
 
-可以把下面这段话发给 Claude Code：
+如果你是通过 `Download ZIP` 下载的，解压后的文件夹可能叫 `agent-loop-streaming-main`。这种情况下，把命令里的 `agent-loop-streaming` 换成 `agent-loop-streaming-main`。
+
+### 项目级安装
+
+如果你只想让某一个项目使用这个 skill，可以让 Claude Code 放在项目目录下。把下面这段话发给 Claude Code：
 
 ```text
 请把 agent-loop-streaming 安装成当前项目专用的 Claude Code skill。
 
-请你找到我 clone 的 `agent-loop-streaming` 文件夹，然后复制到当前项目的 `.claude/skills/agent-loop-streaming/`。
+请你找到我下载或 clone 的 `agent-loop-streaming` 文件夹，然后复制到当前项目的 `.claude/skills/agent-loop-streaming/`。
 如果 `.claude/skills/agent-loop-streaming/` 已经存在，请先问我是否覆盖。
 安装后请确认 `.claude/skills/agent-loop-streaming/SKILL.md` 存在。
 ```
 
-### 在 Claude Code 里如何触发
-
-你可以直接说：
-
-```text
-使用 agent-loop-streaming skill，帮我把这个 AI 售后 agent 的前端流式体验设计成可实现的 brief。
-```
-
-也可以描述问题，让 Claude Code 自动判断是否相关：
-
-```text
-我们现在把 tool call 的 JSON 全部显示在聊天里，最终答案和过程混在一起。请帮我改成更好的 agent loop UI。
-```
-
-### Claude Code 常见问题
-
-- **skill 没出现或没被使用**：确认文件名必须是大写的 `SKILL.md`。
-- **目录名重要吗**：目录名建议使用 `agent-loop-streaming`，Claude Code 会把目录作为 skill 的可识别名称之一。
-- **只想当前项目可用**：放到项目的 `.claude/skills/agent-loop-streaming/`。
-- **想所有项目可用**：放到 `~/.claude/skills/agent-loop-streaming/`。
-- **安装后不生效**：重启 Claude Code 或新开会话。
-
 ## 添加到 Cursor
 
 Cursor 目前更常用的是 **Rules** 机制，而不是直接读取 `SKILL.md` 作为 Claude/Codex 风格的 skill。因此建议把这个 skill 转成 Cursor 项目规则。
-
-Cursor 的项目规则通常放在：
-
-```text
-your-project/.cursor/rules/
-```
-
-建议创建：
-
-```text
-your-project/.cursor/rules/agent-loop-streaming.mdc
-```
 
 ### 推荐方式：让 Cursor 帮你安装
 
@@ -254,29 +163,41 @@ your-project/.cursor/rules/agent-loop-streaming.mdc
 ```text
 请帮我把 agent-loop-streaming skill 安装成当前项目的 Cursor Rule。
 
-我已经 clone 了这个仓库：
+我已经下载或 clone 了这个仓库：
 https://github.com/hensonzh/agent-loop-streaming.git
 
 请你做这些事：
-1. 在当前项目、`~/Downloads`、`~/Desktop`、`~/project`、`~/projects` 等常见位置查找 `agent-loop-streaming` 文件夹。
-2. 确认里面有 `SKILL.md`、`references/` 和 `evals/`。
-3. 在当前项目创建 `.cursor/rules/` 目录。
-4. 基于 `agent-loop-streaming/SKILL.md` 创建 `.cursor/rules/agent-loop-streaming.mdc`。
-5. 在这个 `.mdc` 文件顶部加入 Cursor rule frontmatter：
+1. 先判断我的系统是 macOS、Windows 还是 Linux。
+2. 在当前项目、下载目录、桌面、用户目录等常见位置查找 `agent-loop-streaming` 文件夹。
+3. 如果找到的是 `agent-loop-streaming-main`，请把它当作下载后的 skill 文件夹处理。
+4. 确认里面有 `SKILL.md`、`references/` 和 `evals/`。
+5. 在当前项目创建 `.cursor/rules/` 目录。
+6. 基于 `agent-loop-streaming/SKILL.md` 创建 `.cursor/rules/agent-loop-streaming.mdc`。
+7. 在这个 `.mdc` 文件顶部加入 Cursor rule frontmatter：
    `description: 设计、实现或调试 agent loop streaming 前端体验时使用，包括 work panel、应用侧事件、artifact 渲染、确认动作和验收标准。`
    `alwaysApply: false`
-6. 把整个 `agent-loop-streaming` 文件夹复制到当前项目的 `docs/skills/agent-loop-streaming/`，让 references 也能被 Cursor 读取。
-7. 在 `.cursor/rules/agent-loop-streaming.mdc` 里补一句：需要更多细节时，读取 `docs/skills/agent-loop-streaming/references/` 下的参考文档。
-8. 安装后列出 `.cursor/rules/agent-loop-streaming.mdc` 和 `docs/skills/agent-loop-streaming/SKILL.md`，确认它们存在。
+8. 把整个 `agent-loop-streaming` 文件夹复制到当前项目的 `docs/skills/agent-loop-streaming/`，让 references 也能被 Cursor 读取。
+9. 在 `.cursor/rules/agent-loop-streaming.mdc` 里补一句：需要更多细节时，读取 `docs/skills/agent-loop-streaming/references/` 下的参考文档。
+10. 安装后确认 `.cursor/rules/agent-loop-streaming.mdc` 和 `docs/skills/agent-loop-streaming/SKILL.md` 存在。
 ```
 
 ### 手动方式
 
-如果你熟悉命令行，可以进入你的项目目录后执行：
+macOS / Linux：
 
 ```bash
-mkdir -p .cursor/rules
+mkdir -p .cursor/rules docs/skills
 cp ~/Downloads/agent-loop-streaming/SKILL.md .cursor/rules/agent-loop-streaming.mdc
+cp -R ~/Downloads/agent-loop-streaming docs/skills/agent-loop-streaming
+```
+
+Windows PowerShell：
+
+```powershell
+New-Item -ItemType Directory -Force ".cursor\rules"
+New-Item -ItemType Directory -Force "docs\skills"
+Copy-Item "$env:USERPROFILE\Downloads\agent-loop-streaming\SKILL.md" ".cursor\rules\agent-loop-streaming.mdc"
+Copy-Item -Recurse "$env:USERPROFILE\Downloads\agent-loop-streaming" "docs\skills\agent-loop-streaming"
 ```
 
 然后打开 `.cursor/rules/agent-loop-streaming.mdc`，在文件顶部补上 Cursor rule 的说明：
@@ -288,46 +209,7 @@ alwaysApply: false
 ---
 ```
 
-接着把原 `SKILL.md` 的正文保留在下面。
-
-如果你希望 Cursor 能读到完整参考资料，可以把整个 skill 放到项目文档目录：
-
-```bash
-mkdir -p docs/skills
-cp -R ~/Downloads/agent-loop-streaming docs/skills/agent-loop-streaming
-```
-
-然后在 `.cursor/rules/agent-loop-streaming.mdc` 里加一句：
-
-```md
-需要更多细节时，读取 `docs/skills/agent-loop-streaming/references/` 下的参考文档。
-```
-
-这样 Cursor 在处理相关任务时，可以通过项目文件读取 `references/frontend-work-panel.md`、`references/event-contract.md` 和 `references/debugging-and-tests.md`。
-
-### 在 Cursor 里如何触发
-
-你可以在聊天里明确引用规则：
-
-```text
-请按 agent-loop-streaming 规则，帮我把当前 AI assistant 的 loading UI 改造成 work panel + artifact area。
-```
-
-也可以在任务里描述目标：
-
-```text
-这个页面现在只有 spinner。agent 会查客户记录、生成邮件草稿、确认后发送。请实现一个前端流式过程 UI。
-```
-
-如果规则没有自动进入上下文，可以手动把 `.cursor/rules/agent-loop-streaming.mdc` 或 `docs/skills/agent-loop-streaming/SKILL.md` 加到聊天上下文里。
-
-### Cursor 常见问题
-
-- **Cursor 没有自动读取 `SKILL.md`**：这是正常的。Cursor 主要使用 `.cursor/rules/*.mdc`。
-- **规则没有生效**：确认文件在项目根目录的 `.cursor/rules/` 下，并且扩展名是 `.mdc`。
-- **不知道项目根目录在哪里**：通常是你在 Cursor 里打开的那个文件夹，里面可能有 `package.json`、`.git`、`src/` 等文件。
-- **想让规则一直生效**：可以把 `alwaysApply` 改成 `true`，但不建议一开始就这样做；这个 skill 只适合 agent loop streaming 相关任务。
-- **references 没被读到**：把整个 `agent-loop-streaming` 文件夹放进项目，比如 `docs/skills/agent-loop-streaming/`，然后在 prompt 里明确让 Cursor 读取该目录。
+如果你是通过 `Download ZIP` 下载的，解压后的文件夹可能叫 `agent-loop-streaming-main`。这种情况下，把命令里的 `agent-loop-streaming` 换成 `agent-loop-streaming-main`。
 
 ## 安全建议
 
