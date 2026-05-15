@@ -56,7 +56,7 @@ git clone https://github.com/hensonzh/agent-loop-streaming.git
 
 ## 添加到 Codex
 
-### 推荐方式：让 Codex 帮你安装
+### 推荐方式（面向非专业程序员）：让 Codex 帮你安装
 
 如果你已经在 Codex 里，可以把下面这段话直接发给 Codex：
 
@@ -79,7 +79,7 @@ https://github.com/hensonzh/agent-loop-streaming.git
 
 安装完成后，重启 Codex，或开一个新的 Codex 会话。
 
-### 手动方式
+### 手动方式（面向专业程序员）
 
 macOS / Linux：
 
@@ -97,66 +97,11 @@ Copy-Item -Recurse "$env:USERPROFILE\Downloads\agent-loop-streaming" "$env:USERP
 
 如果你是通过 `Download ZIP` 下载的，解压后的文件夹可能叫 `agent-loop-streaming-main`。这种情况下，把命令里的 `agent-loop-streaming` 换成 `agent-loop-streaming-main`。
 
-## 添加到 Claude Code
-
-### 推荐方式：让 Claude Code 帮你安装
-
-如果你已经在 Claude Code 里，可以把下面这段话直接发给 Claude Code：
-
-```text
-请帮我安装 agent-loop-streaming skill。
-
-我已经下载或 clone 了这个仓库：
-https://github.com/hensonzh/agent-loop-streaming.git
-
-请你做这些事：
-1. 先判断我的系统是 macOS、Windows 还是 Linux。
-2. 在当前项目、下载目录、桌面、用户目录等常见位置查找 `agent-loop-streaming` 文件夹。
-3. 如果找到的是 `agent-loop-streaming-main`，请把它当作下载后的 skill 文件夹处理。
-4. 确认里面有 `SKILL.md`、`references/` 和 `evals/`。
-5. 按当前系统创建 Claude Code skills 目录：macOS/Linux 用 `~/.claude/skills/`，Windows 用 `%USERPROFILE%\.claude\skills\`。
-6. 把整个 skill 文件夹复制进去，并命名为 `agent-loop-streaming`。
-7. 如果目标目录已经存在，先告诉我，再询问是否覆盖。
-8. 安装后确认 `agent-loop-streaming/SKILL.md` 存在。
-```
-
-安装完成后，重启 Claude Code，或退出当前会话后重新进入项目。
-
-### 手动方式
-
-macOS / Linux：
-
-```bash
-mkdir -p ~/.claude/skills
-cp -R ~/Downloads/agent-loop-streaming ~/.claude/skills/agent-loop-streaming
-```
-
-Windows PowerShell：
-
-```powershell
-New-Item -ItemType Directory -Force "$env:USERPROFILE\.claude\skills"
-Copy-Item -Recurse "$env:USERPROFILE\Downloads\agent-loop-streaming" "$env:USERPROFILE\.claude\skills\agent-loop-streaming"
-```
-
-如果你是通过 `Download ZIP` 下载的，解压后的文件夹可能叫 `agent-loop-streaming-main`。这种情况下，把命令里的 `agent-loop-streaming` 换成 `agent-loop-streaming-main`。
-
-### 项目级安装
-
-如果你只想让某一个项目使用这个 skill，可以让 Claude Code 放在项目目录下。把下面这段话发给 Claude Code：
-
-```text
-请把 agent-loop-streaming 安装成当前项目专用的 Claude Code skill。
-
-请你找到我下载或 clone 的 `agent-loop-streaming` 文件夹，然后复制到当前项目的 `.claude/skills/agent-loop-streaming/`。
-如果 `.claude/skills/agent-loop-streaming/` 已经存在，请先问我是否覆盖。
-安装后请确认 `.claude/skills/agent-loop-streaming/SKILL.md` 存在。
-```
-
 ## 添加到 Cursor
 
 Cursor 目前更常用的是 **Rules** 机制，而不是直接读取 `SKILL.md` 作为 Claude/Codex 风格的 skill。因此建议把这个 skill 转成 Cursor 项目规则。
 
-### 推荐方式：让 Cursor 帮你安装
+### 推荐方式（面向非专业程序员）：让 Cursor 帮你安装
 
 如果你已经在 Cursor 里打开了自己的项目，可以把下面这段话发给 Cursor Chat：
 
@@ -181,7 +126,7 @@ https://github.com/hensonzh/agent-loop-streaming.git
 10. 安装后确认 `.cursor/rules/agent-loop-streaming.mdc` 和 `docs/skills/agent-loop-streaming/SKILL.md` 存在。
 ```
 
-### 手动方式
+### 手动方式（面向专业程序员）
 
 macOS / Linux：
 
@@ -210,6 +155,61 @@ alwaysApply: false
 ```
 
 如果你是通过 `Download ZIP` 下载的，解压后的文件夹可能叫 `agent-loop-streaming-main`。这种情况下，把命令里的 `agent-loop-streaming` 换成 `agent-loop-streaming-main`。
+
+## 添加到 Claude Code
+
+### 推荐方式（面向非专业程序员）：让 Claude Code 帮你安装
+
+如果你已经在 Claude Code 里，可以把下面这段话直接发给 Claude Code：
+
+```text
+请帮我安装 agent-loop-streaming skill。
+
+我已经下载或 clone 了这个仓库：
+https://github.com/hensonzh/agent-loop-streaming.git
+
+请你做这些事：
+1. 先判断我的系统是 macOS、Windows 还是 Linux。
+2. 在当前项目、下载目录、桌面、用户目录等常见位置查找 `agent-loop-streaming` 文件夹。
+3. 如果找到的是 `agent-loop-streaming-main`，请把它当作下载后的 skill 文件夹处理。
+4. 确认里面有 `SKILL.md`、`references/` 和 `evals/`。
+5. 按当前系统创建 Claude Code skills 目录：macOS/Linux 用 `~/.claude/skills/`，Windows 用 `%USERPROFILE%\.claude\skills\`。
+6. 把整个 skill 文件夹复制进去，并命名为 `agent-loop-streaming`。
+7. 如果目标目录已经存在，先告诉我，再询问是否覆盖。
+8. 安装后确认 `agent-loop-streaming/SKILL.md` 存在。
+```
+
+安装完成后，重启 Claude Code，或退出当前会话后重新进入项目。
+
+### 手动方式（面向专业程序员）
+
+macOS / Linux：
+
+```bash
+mkdir -p ~/.claude/skills
+cp -R ~/Downloads/agent-loop-streaming ~/.claude/skills/agent-loop-streaming
+```
+
+Windows PowerShell：
+
+```powershell
+New-Item -ItemType Directory -Force "$env:USERPROFILE\.claude\skills"
+Copy-Item -Recurse "$env:USERPROFILE\Downloads\agent-loop-streaming" "$env:USERPROFILE\.claude\skills\agent-loop-streaming"
+```
+
+如果你是通过 `Download ZIP` 下载的，解压后的文件夹可能叫 `agent-loop-streaming-main`。这种情况下，把命令里的 `agent-loop-streaming` 换成 `agent-loop-streaming-main`。
+
+### 项目级安装
+
+如果你只想让某一个项目使用这个 skill，可以让 Claude Code 放在项目目录下。把下面这段话发给 Claude Code：
+
+```text
+请把 agent-loop-streaming 安装成当前项目专用的 Claude Code skill。
+
+请你找到我下载或 clone 的 `agent-loop-streaming` 文件夹，然后复制到当前项目的 `.claude/skills/agent-loop-streaming/`。
+如果 `.claude/skills/agent-loop-streaming/` 已经存在，请先问我是否覆盖。
+安装后请确认 `.claude/skills/agent-loop-streaming/SKILL.md` 存在。
+```
 
 ## 安全建议
 
