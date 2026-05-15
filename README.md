@@ -31,17 +31,26 @@ agent-loop-streaming/
 - `references/debugging-and-tests.md`：给 vibe coder 和 coding agent 的实现 brief 模板、调试建议和验收清单。
 - `evals/evals.json`：用于检查这个 skill 是否按预期工作的示例评测 prompt。
 
-## 快速使用
+## 快速安装思路
 
-如果你已经熟悉命令行，可以直接克隆这个仓库：
+最适合非专业程序员的方式不是自己手动移动文件，而是：
+
+1. 先把这个仓库 clone 到电脑里。
+2. 打开你正在使用的 Codex、Claude Code 或 Cursor。
+3. 把下面对应工具的安装 prompt 发给它。
+4. 让它帮你检查目录、移动文件、确认是否安装成功。
+
+先 clone 仓库：
 
 ```bash
 git clone https://github.com/hensonzh/agent-loop-streaming.git
 ```
 
-然后按你使用的工具，把整个 `agent-loop-streaming` 文件夹放到对应位置。
+如果你不知道 clone 到了哪里，可以直接把这句话发给你的 AI 助手：
 
-放置完成后，重启对应的 coding agent 或重新打开一个会话，让它重新扫描可用的 skill / rules。
+```text
+我刚刚 clone 了 https://github.com/hensonzh/agent-loop-streaming.git，但我不知道它在哪个目录。请帮我在常见下载目录和当前项目附近查找 `agent-loop-streaming` 文件夹，然后按你的工具要求帮我安装。
+```
 
 ## 添加到 Codex
 
@@ -61,37 +70,41 @@ Codex 的本地 skill 通常放在：
 ~/.codex/skills/agent-loop-streaming/evals/evals.json
 ```
 
-### 方法一：用 git clone 安装
+### 推荐方式：让 Codex 帮你安装
 
-适合你还没有下载这个仓库的情况。
+如果你已经在 Codex 里，可以把下面这段话直接发给 Codex：
+
+```text
+请帮我安装 agent-loop-streaming skill。
+
+我已经 clone 了这个仓库：
+https://github.com/hensonzh/agent-loop-streaming.git
+
+请你做这些事：
+1. 在当前项目、`~/Downloads`、`~/Desktop`、`~/project`、`~/projects` 等常见位置查找 `agent-loop-streaming` 文件夹。
+2. 确认里面有 `SKILL.md`、`references/` 和 `evals/`。
+3. 创建 `~/.codex/skills/` 目录。
+4. 把整个 `agent-loop-streaming` 文件夹复制到 `~/.codex/skills/agent-loop-streaming`。
+5. 如果目标目录已经存在，先告诉我，再询问是否覆盖。
+6. 安装后列出最终目录结构，确认 `~/.codex/skills/agent-loop-streaming/SKILL.md` 存在。
+```
+
+安装完成后，重启 Codex，或开一个新的 Codex 会话。
+
+### 手动方式
+
+如果你熟悉命令行，也可以直接执行：
 
 ```bash
 mkdir -p ~/.codex/skills
 git clone https://github.com/hensonzh/agent-loop-streaming.git ~/.codex/skills/agent-loop-streaming
 ```
 
-然后重启 Codex，或开一个新的 Codex 会话。
-
-### 方法二：已经下载后复制进去
-
-假设你已经把仓库下载到了 `~/Downloads/agent-loop-streaming`：
+如果你已经把仓库下载到了 `~/Downloads/agent-loop-streaming`：
 
 ```bash
 mkdir -p ~/.codex/skills
 cp -R ~/Downloads/agent-loop-streaming ~/.codex/skills/agent-loop-streaming
-```
-
-如果你已经在某个项目里有这个目录，例如：
-
-```text
-/Users/you/project/skills/agent-loop-streaming
-```
-
-可以复制：
-
-```bash
-mkdir -p ~/.codex/skills
-cp -R /Users/you/project/skills/agent-loop-streaming ~/.codex/skills/agent-loop-streaming
 ```
 
 ### 在 Codex 里如何触发
@@ -135,18 +148,37 @@ Claude Code 的个人 skill 通常放在：
 ~/.claude/skills/agent-loop-streaming/evals/evals.json
 ```
 
-### 方法一：用 git clone 安装
+### 推荐方式：让 Claude Code 帮你安装
+
+如果你已经在 Claude Code 里，可以把下面这段话直接发给 Claude Code：
+
+```text
+请帮我安装 agent-loop-streaming skill。
+
+我已经 clone 了这个仓库：
+https://github.com/hensonzh/agent-loop-streaming.git
+
+请你做这些事：
+1. 在当前项目、`~/Downloads`、`~/Desktop`、`~/project`、`~/projects` 等常见位置查找 `agent-loop-streaming` 文件夹。
+2. 确认里面有 `SKILL.md`、`references/` 和 `evals/`。
+3. 创建 `~/.claude/skills/` 目录。
+4. 把整个 `agent-loop-streaming` 文件夹复制到 `~/.claude/skills/agent-loop-streaming`。
+5. 如果目标目录已经存在，先告诉我，再询问是否覆盖。
+6. 安装后列出最终目录结构，确认 `~/.claude/skills/agent-loop-streaming/SKILL.md` 存在。
+```
+
+安装完成后，重启 Claude Code，或退出当前会话后重新进入项目。
+
+### 手动方式
+
+如果你熟悉命令行，也可以直接执行：
 
 ```bash
 mkdir -p ~/.claude/skills
 git clone https://github.com/hensonzh/agent-loop-streaming.git ~/.claude/skills/agent-loop-streaming
 ```
 
-然后重启 Claude Code，或退出当前会话后重新进入项目。
-
-### 方法二：复制已有目录
-
-假设你已经下载到 `~/Downloads/agent-loop-streaming`：
+如果你已经下载到 `~/Downloads/agent-loop-streaming`：
 
 ```bash
 mkdir -p ~/.claude/skills
@@ -155,7 +187,7 @@ cp -R ~/Downloads/agent-loop-streaming ~/.claude/skills/agent-loop-streaming
 
 ### 项目级安装
 
-如果你只想让某一个项目使用这个 skill，可以放在项目目录下：
+如果你只想让某一个项目使用这个 skill，可以让 Claude Code 放在项目目录下：
 
 ```text
 your-project/
@@ -167,11 +199,14 @@ your-project/
             └── evals/
 ```
 
-复制命令示例：
+可以把下面这段话发给 Claude Code：
 
-```bash
-mkdir -p .claude/skills
-cp -R ~/Downloads/agent-loop-streaming .claude/skills/agent-loop-streaming
+```text
+请把 agent-loop-streaming 安装成当前项目专用的 Claude Code skill。
+
+请你找到我 clone 的 `agent-loop-streaming` 文件夹，然后复制到当前项目的 `.claude/skills/agent-loop-streaming/`。
+如果 `.claude/skills/agent-loop-streaming/` 已经存在，请先问我是否覆盖。
+安装后请确认 `.claude/skills/agent-loop-streaming/SKILL.md` 存在。
 ```
 
 ### 在 Claude Code 里如何触发
@@ -212,18 +247,39 @@ your-project/.cursor/rules/
 your-project/.cursor/rules/agent-loop-streaming.mdc
 ```
 
-### 方法一：把 SKILL.md 作为 Cursor Rule
+### 推荐方式：让 Cursor 帮你安装
 
-进入你的项目目录后执行：
+如果你已经在 Cursor 里打开了自己的项目，可以把下面这段话发给 Cursor Chat：
+
+```text
+请帮我把 agent-loop-streaming skill 安装成当前项目的 Cursor Rule。
+
+我已经 clone 了这个仓库：
+https://github.com/hensonzh/agent-loop-streaming.git
+
+请你做这些事：
+1. 在当前项目、`~/Downloads`、`~/Desktop`、`~/project`、`~/projects` 等常见位置查找 `agent-loop-streaming` 文件夹。
+2. 确认里面有 `SKILL.md`、`references/` 和 `evals/`。
+3. 在当前项目创建 `.cursor/rules/` 目录。
+4. 基于 `agent-loop-streaming/SKILL.md` 创建 `.cursor/rules/agent-loop-streaming.mdc`。
+5. 在这个 `.mdc` 文件顶部加入 Cursor rule frontmatter：
+   `description: 设计、实现或调试 agent loop streaming 前端体验时使用，包括 work panel、应用侧事件、artifact 渲染、确认动作和验收标准。`
+   `alwaysApply: false`
+6. 把整个 `agent-loop-streaming` 文件夹复制到当前项目的 `docs/skills/agent-loop-streaming/`，让 references 也能被 Cursor 读取。
+7. 在 `.cursor/rules/agent-loop-streaming.mdc` 里补一句：需要更多细节时，读取 `docs/skills/agent-loop-streaming/references/` 下的参考文档。
+8. 安装后列出 `.cursor/rules/agent-loop-streaming.mdc` 和 `docs/skills/agent-loop-streaming/SKILL.md`，确认它们存在。
+```
+
+### 手动方式
+
+如果你熟悉命令行，可以进入你的项目目录后执行：
 
 ```bash
 mkdir -p .cursor/rules
 cp ~/Downloads/agent-loop-streaming/SKILL.md .cursor/rules/agent-loop-streaming.mdc
 ```
 
-如果你的仓库在其他位置，把 `~/Downloads/agent-loop-streaming` 换成真实路径。
-
-然后打开 `.cursor/rules/agent-loop-streaming.mdc`，在文件顶部补上 Cursor rule 的说明，例如：
+然后打开 `.cursor/rules/agent-loop-streaming.mdc`，在文件顶部补上 Cursor rule 的说明：
 
 ```md
 ---
@@ -233,8 +289,6 @@ alwaysApply: false
 ```
 
 接着把原 `SKILL.md` 的正文保留在下面。
-
-### 方法二：把 references 也放进 Cursor 能看到的位置
 
 如果你希望 Cursor 能读到完整参考资料，可以把整个 skill 放到项目文档目录：
 
@@ -274,33 +328,6 @@ cp -R ~/Downloads/agent-loop-streaming docs/skills/agent-loop-streaming
 - **不知道项目根目录在哪里**：通常是你在 Cursor 里打开的那个文件夹，里面可能有 `package.json`、`.git`、`src/` 等文件。
 - **想让规则一直生效**：可以把 `alwaysApply` 改成 `true`，但不建议一开始就这样做；这个 skill 只适合 agent loop streaming 相关任务。
 - **references 没被读到**：把整个 `agent-loop-streaming` 文件夹放进项目，比如 `docs/skills/agent-loop-streaming/`，然后在 prompt 里明确让 Cursor 读取该目录。
-
-## 更新这个 skill
-
-如果你是通过 `git clone` 安装的，可以进入对应目录后拉取更新。
-
-Codex：
-
-```bash
-cd ~/.codex/skills/agent-loop-streaming
-git pull
-```
-
-Claude Code：
-
-```bash
-cd ~/.claude/skills/agent-loop-streaming
-git pull
-```
-
-Cursor 项目内文档：
-
-```bash
-cd docs/skills/agent-loop-streaming
-git pull
-```
-
-如果你是复制安装的，最简单的更新方式是删除旧目录后重新复制或重新 clone。
 
 ## 安全建议
 
